@@ -1,6 +1,7 @@
 # Ex.No: 2 Implementation of Stack Plate game using Queue 
 ### DATE:  8/9/24                                                                          
-### REGISTER NUMBER : 
+### REGISTER NUMBER : 212221240043
+### NAME : RAGUL VK
 ### AIM: 
 To write a python program to simulate the process of stacking plates.
 ### Algorithm:

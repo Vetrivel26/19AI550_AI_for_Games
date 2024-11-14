@@ -1,21 +1,21 @@
-# Ex.No: 6  Implementation of Zombie survival game using A* search 
-### DATE:                                      
-### REGISTER NUMBER : 212221240060
-### AIM: 
-To write a python program to simulate the Zomibie Survival game using A* Search 
-### Algorithm:
+# Ex.No: 7  Implementation of Alpha Beta Pruning 
+## Date:                                                                       
+## Register Number : 212221240060
+### Aim: 
+  Write a Alpha beta pruning algorithm to find the optimal value of MAX Player from the given graph.
+### Steps:
 1. Start the program
-2. Import the necessary modules
-3. Initiate the pygame engine and window
-4. Collect the Zombie image and resize it within a display window 
-5. Create a Euclidean distance heuristic function to find the distance from current location to Target position
-6.  Move the Zombie towards the target by A* search 
-7.  In main, create the obstacles and move the player by Key movements up, down,left and right 
-10.  Update the display every time 
-11.  Stop the program
-### Program:
+2. Initially  assign MAX and MIN value as 1000 and -1000.
+3.  Define the minimax function  using alpha beta pruning
+4.  If maximum depth is reached then return the score value of leaf node. [depth taken as 3]
+5.  In Max player turn, assign the alpha value by finding the maximum value by calling the minmax function recursively.
+6.  In Min player turn, assign beta value by finding the minimum value by calling the minmax function recursively.
+7.  Specify the score value of leaf nodes and Call the minimax function.
+8.  Print the best value of Max player.
+9.  Stop the program. 
 
-```python
+### Program:
+```py
 # Define a large negative and positive value to represent infinity
 INF = float('inf')
 
@@ -50,16 +50,17 @@ def alpha_beta_pruning(depth, node_index, maximizing_player, values, alpha, beta
                 break
         return min_eval
 
-# Driver code : 
-if __name__ == "__main__":
+# Driver code
+if _name_ == "_main_":
     # This is the terminal/leaf node values of the game tree
     values = [3, 5, 6, 9, 1, 2, 0, -1]
 
     print("Optimal value:", alpha_beta_pruning(0, 0, True, values, -INF, INF))
 ```
+
 ### Output:
-<img width="1128" alt="377505777-24ec26e2-cbce-4aeb-b866-0918b98e1d39" src="https://github.com/user-attachments/assets/0a7976c5-c8c1-47e2-be9a-f53331355daa">
+![image](https://github.com/user-attachments/assets/b4b37ab0-b97e-4bb6-b0eb-4aa1d66a4999)
 
 
 ### Result:
-Thus the simple Zombie survival game was implemented using python.
+  Thus the best score of max player was found using Alpha Beta Pruning.

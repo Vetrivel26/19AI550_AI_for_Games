@@ -1,65 +1,51 @@
-# Ex.No: 6  Implementation of Zombie survival game using A* search 
-### DATE:                                      
+# Ex.No: 1  Implementation of HotPotato game using Queue 
+### DATE:                                                                    
 ### REGISTER NUMBER : 212221240060
 ### AIM: 
-To write a python program to simulate the Zomibie Survival game using A* Search 
+To write a python program to simulate the process of passing an item among players and eliminating players based on the given rules until a single winner is determined.
 ### Algorithm:
-1. Start the program
-2. Import the necessary modules
-3. Initiate the pygame engine and window
-4. Collect the Zombie image and resize it within a display window 
-5. Create a Euclidean distance heuristic function to find the distance from current location to Target position
-6.  Move the Zombie towards the target by A* search 
-7.  In main, create the obstacles and move the player by Key movements up, down,left and right 
-10.  Update the display every time 
-11.  Stop the program
+1. Initialize the Queue: Create a queue and enqueue all the participants.
+2. Pass the Potato: Dequeue the first person in the queue and enqueue them at the end. This simulates passing the potato.
+3. Count the Passes: Repeat the passing for a given number of times.
+4. Eliminate the Holder: After the set number of passes, remove the person who holds the potato (dequeue the front of the queue).
+5. Repeat: Continue the process until only one person remains in the queue.
 ### Program:
-
-```python
-# Define a large negative and positive value to represent infinity
-INF = float('inf')
-
-# Alpha-Beta Pruning function
-def alpha_beta_pruning(depth, node_index, maximizing_player, values, alpha, beta):
-    # Base case: leaf node is reached
-    if depth == 3:
-        return values[node_index]
-    
-    if maximizing_player:
-        max_eval = -INF
-        # Recur for the two children of the current node
-        for i in range(2):
-            eval = alpha_beta_pruning(depth + 1, node_index * 2 + i, False, values, alpha, beta)
-            max_eval = max(max_eval, eval)
-            alpha = max(alpha, eval)
-            
-            # Prune the branch
-            if beta <= alpha:
-                break
-        return max_eval
-    else:
-        min_eval = INF
-        # Recur for the two children of the current node
-        for i in range(2):
-            eval = alpha_beta_pruning(depth + 1, node_index * 2 + i, True, values, alpha, beta)
-            min_eval = min(min_eval, eval)
-            beta = min(beta, eval)
-            
-            # Prune the branch
-            if beta <= alpha:
-                break
-        return min_eval
-
-# Driver code : 
-if __name__ == "__main__":
-    # This is the terminal/leaf node values of the game tree
-    values = [3, 5, 6, 9, 1, 2, 0, -1]
-
-    print("Optimal value:", alpha_beta_pruning(0, 0, True, values, -INF, INF))
 ```
+import queue
+import random
+import time
+
+def hot_potato(names, num):
+    sim_queue = queue.Queue()
+
+    for name in names:
+        sim_queue.put(name)
+
+    while sim_queue.qsize() > 1:
+        for _ in range(num):
+            sim_queue.put(sim_queue.get())
+        eliminated = sim_queue.get()
+        print(f"{eliminated} is eliminated!")
+
+    return sim_queue.get()
+
+def main():
+    players = ["Alice", "Bob", "Charlie", "David", "Eve"]
+    #num_passes = random.randint(1, 10)
+    num_passes=1
+    print("Hot Potato Game Start!")
+    time.sleep(1)
+    winner = hot_potato(players, num_passes)
+    print(f"\nThe winner is: {winner}")
+
+if _name_ == "_main_":
+    main()
+```
+
+
 ### Output:
-<img width="1128" alt="377505777-24ec26e2-cbce-4aeb-b866-0918b98e1d39" src="https://github.com/user-attachments/assets/0a7976c5-c8c1-47e2-be9a-f53331355daa">
+![WhatsApp Image 2024-08-09 at 11 34 19_17a2290e](https://github.com/user-attachments/assets/ced7fab2-8824-4fbf-a522-3e05ddf4492a)
 
 
 ### Result:
-Thus the simple Zombie survival game was implemented using python.
+Thus the simple HotPotato game was implemented using Queue.

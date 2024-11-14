@@ -1,77 +1,112 @@
-# Ex.No: 2 Implementation of Stack Plate game using Queue 
-### DATE:                                                                         
+# Ex.No: 3  Implementation of Kinematic movement seek and flee behaviors 
+### DATE:                                                                            
 ### REGISTER NUMBER : 212221240060
 ### AIM: 
-To write a python program to simulate the process of stacking plates.
+To write a python program to simulate the process of seek and flee behaviors using mouse movements.
 ### Algorithm:
-1. Initialize the Stack
-2. Create an empty list to represent the stack.
-3. Push the plate on top of stack
-4. Pop the plate from top.
-5. Display the plate details.
-6. Create an interactive menu and display it.
+1. Import the necessary modules pygame, math, random when necessary.
+2. Initiate the pygame engine
+3. Create a window with size (400,300)
+4. Create a function to simulate the seek behavior - to move towards the target 
+5. Create a function to simulate the flee behavior - to move away from the target 
+6. Update the position of object
+7. Create a game loop to display the update behavior
+8. Call the seek function when left mouse button is pressed
+9. Call the flee function when right mouse button is pressed
+10. Close the pygame window when quit icon is clicked.
+11. Stop the program
+    
 ### Program:
 ```python
-class PlateStack:
-    def __init__(self):
-        self.stack = []
+import pygame
+import math
+import sys
 
-    def is_empty(self):
-        return len(self.stack) == 0
+# Initialize Pygame
+pygame.init()
 
-    def push(self, plate):
-        self.stack.append(plate)
-        print(f"Plate '{plate}' added to the stack.")
+# Set up display
+WIDTH, HEIGHT = 800, 600
+window = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Kinematic Movement Example")
 
-    def pop(self):
-        if self.is_empty():
-            print("The stack is empty. No plates to remove.")
+# Colors
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+
+# Character settings
+CHAR_SIZE = 20
+MAX_SPEED = 5
+
+# Character class
+class Character:
+    def __init__(self, x, y, color):
+        self.position = pygame.Vector2(x, y)
+        self.velocity = pygame.Vector2(0, 0)
+        self.color = color
+
+    def seek(self, target):
+        desired_velocity = target - self.position
+        if desired_velocity.length() > 0:  # Ensure the vector is not zero
+            desired_velocity = desired_velocity.normalize() * MAX_SPEED
+        self.velocity = desired_velocity
+
+    def flee(self, target):
+        desired_velocity = self.position - target
+        if desired_velocity.length() > 0:  # Ensure the vector is not zero
+            desired_velocity = desired_velocity.normalize() * MAX_SPEED
+        self.velocity = desired_velocity
+
+    def update(self):
+        self.position += self.velocity
+
+    def draw(self, surface):
+        pygame.draw.circle(surface, self.color, (int(self.position.x), int(self.position.y)), CHAR_SIZE)
+
+# Main function
+def main():
+    clock = pygame.time.Clock()
+    player = Character(WIDTH // 2, HEIGHT // 2, WHITE)
+    target = Character(WIDTH // 4, HEIGHT // 4, RED)
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        # Get mouse position
+        mouse_pos = pygame.Vector2(pygame.mouse.get_pos())
+
+        # Basic controls: seek or flee based on mouse button
+        if pygame.mouse.get_pressed()[0]:  # Left button - Seek
+            player.seek(mouse_pos)
+        elif pygame.mouse.get_pressed()[2]:  # Right button - Flee
+            player.flee(mouse_pos)
         else:
-            removed_plate = self.stack.pop()
-            print(f"Plate '{removed_plate}' removed from the stack.")
+            player.velocity = pygame.Vector2(0, 0)  # Stop if no button is pressed
 
-    def view_stack(self):
-        if self.is_empty():
-            print("The stack is empty.")
-        else:
-            print("Current stack of plates:")
-            for plate in reversed(self.stack):
-                print(plate)
+        # Update player position
+        player.update()
 
-def plate_stack_game():
-    plate_stack = PlateStack()
-    print("Welcome to the Plate Stack Game!")
+        # Draw everything
+        window.fill(BLACK)
+        player.draw(window)
+        target.draw(window)
+        pygame.display.flip()
 
-    while True:
-        print("\nChoose an option:")
-        print("1. Add a plate")
-        print("2. Remove a plate")
-        print("3. View stack")
-        print("4. Exit")
+        # Cap the frame rate
+        clock.tick(60)
 
-        choice = input("Enter your choice: ")
-
-        if choice == '1':
-            plate = input("Enter the name of the plate to add: ")
-            plate_stack.push(plate)
-        elif choice == '2':
-            plate_stack.pop()
-        elif choice == '3':
-            plate_stack.view_stack()
-        elif choice == '4':
-            print("Exiting the game. Goodbye!")
-            break
-        else:
-            print("Invalid choice. Please try again.")
+    pygame.quit()
+    sys.exit()
 
 if __name__ == "__main__":
-    plate_stack_game()
+    main()
 ```
-
 ### Output:
-![Screenshot 2024-08-11 133752](https://github.com/user-attachments/assets/4023310e-4b1c-4247-b0e7-38441363b177)
-
-
+<img src= "https://github.com/user-attachments/assets/e6e7a748-c69f-4e0e-a4c1-234978604c99" width="400" height="400">
 
 ### Result:
-Thus the simple Stack plate game was implemented using data structure Stack.
+Thus the simple seek and flee behavior was implemented successfully.

@@ -1,66 +1,45 @@
-# Ex.No: 7  Implementation of Alpha Beta Pruning 
-## Date:                                                                       
-## Register Number : 212221240060
-### Aim: 
-  Write a Alpha beta pruning algorithm to find the optimal value of MAX Player from the given graph.
-### Steps:
+
+# Ex.No: 8  Implementation of Minimax Search
+#### DATE:                                                                          
+#### REGISTER NUMBER : 212221240060
+## Aim: 
+Write a mini-max search algorithm to find the optimal value of MAX Player from the given graph.
+## Algorithm:
 1. Start the program
-2. Initially  assign MAX and MIN value as 1000 and -1000.
-3.  Define the minimax function  using alpha beta pruning
-4.  If maximum depth is reached then return the score value of leaf node. [depth taken as 3]
-5.  In Max player turn, assign the alpha value by finding the maximum value by calling the minmax function recursively.
-6.  In Min player turn, assign beta value by finding the minimum value by calling the minmax function recursively.
-7.  Specify the score value of leaf nodes and Call the minimax function.
-8.  Print the best value of Max player.
-9.  Stop the program. 
+2. import the math package
+3. Specify the score value of leaf nodes and find the depth of binary tree from leaf nodes.
+4. Define the minimax function
+5. If maximum depth is reached then get the score value of leaf node.
+6. Max player find the maximum value by calling the minmax function recursively.
+7. Min player find the minimum value by calling the minmax function recursively.
+8. Call the minimax function  and print the optimum value of Max player.
+9. Stop the program. 
 
-### Program:
-```py
-# Define a large negative and positive value to represent infinity
-INF = float('inf')
-
-# Alpha-Beta Pruning function
-def alpha_beta_pruning(depth, node_index, maximizing_player, values, alpha, beta):
-    # Base case: leaf node is reached
-    if depth == 3:
-        return values[node_index]
-    
-    if maximizing_player:
-        max_eval = -INF
-        # Recur for the two children of the current node
-        for i in range(2):
-            eval = alpha_beta_pruning(depth + 1, node_index * 2 + i, False, values, alpha, beta)
-            max_eval = max(max_eval, eval)
-            alpha = max(alpha, eval)
-            
-            # Prune the branch
-            if beta <= alpha:
-                break
-        return max_eval
+## Program:
+```python
+import math
+def minimax (curDepth, nodeIndex,maxTurn, scores,targetDepth):
+    # base case : targetDepth reached
+    if (curDepth == targetDepth):
+        return scores[nodeIndex]
+    if (maxTurn):
+        return max(minimax(curDepth + 1, nodeIndex * 2,False, scores, targetDepth),
+                   minimax(curDepth + 1, nodeIndex * 2 + 1,
+                    False, scores, targetDepth))
     else:
-        min_eval = INF
-        # Recur for the two children of the current node
-        for i in range(2):
-            eval = alpha_beta_pruning(depth + 1, node_index * 2 + i, True, values, alpha, beta)
-            min_eval = min(min_eval, eval)
-            beta = min(beta, eval)
-            
-            # Prune the branch
-            if beta <= alpha:
-                break
-        return min_eval
-
+        return min(minimax(curDepth + 1, nodeIndex * 2,True, scores, targetDepth),
+                   minimax(curDepth + 1, nodeIndex * 2 + 1,
+                     True, scores, targetDepth))
 # Driver code
-if _name_ == "_main_":
-    # This is the terminal/leaf node values of the game tree
-    values = [3, 5, 6, 9, 1, 2, 0, -1]
-
-    print("Optimal value:", alpha_beta_pruning(0, 0, True, values, -INF, INF))
+scores = [3, 5, 2, 9, 12, 5, 23, 20]
+treeDepth = math.log(len(scores), 2) # calculate depth of node  log 8 (base 2) = 3)
+print("The optimal value is : ", end = "")
+print(minimax(0, 0, True, scores, treeDepth))
 ```
 
-### Output:
-![image](https://github.com/user-attachments/assets/b4b37ab0-b97e-4bb6-b0eb-4aa1d66a4999)
+## Output:
+![op1](https://github.com/user-attachments/assets/217a6a4c-ca11-496f-aca6-b767a7698015)
 
 
-### Result:
-  Thus the best score of max player was found using Alpha Beta Pruning.
+## Result:
+Thus the optimum value of max player was found using minimax search.

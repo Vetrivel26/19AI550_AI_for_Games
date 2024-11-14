@@ -3,7 +3,6 @@
 # Ex.No: 10 Implementation of Negamax algorithm 
 
 DATE:
-# NAME : DHARMARAJ
 # REGISTER NUMBER :212221240060
 
 ### Aim:

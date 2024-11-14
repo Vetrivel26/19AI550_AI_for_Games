@@ -1,71 +1,65 @@
-# Ex.No: 5  Implementation of Jumping behavior 
-#### DATE:                                                                        
-#### REGISTER NUMBER : 212221240060
+# Ex.No: 6  Implementation of Zombie survival game using A* search 
+### DATE:                                      
+### REGISTER NUMBER : 212221240060
 ### AIM: 
-To write a python program to simulate Jumbing behavior. 
-
+To write a python program to simulate the Zomibie Survival game using A* Search 
 ### Algorithm:
 1. Start the program
 2. Import the necessary modules
 3. Initiate the pygame engine and window
-4. Specify the necessary parameter for player height,depth,gravity,jump power. 
-5. Create a game loop to simulate the continuous behavior.
-6. If Quit button is pressed then quit the pygame window.
-7. Move the player left when left button is pressed
-8. Move the player right when right button is pressed
-9. If space bar is pressed then enable the jump by increasing y axis value.
-10. land the player and display the player at every timestep
+4. Collect the Zombie image and resize it within a display window 
+5. Create a Euclidean distance heuristic function to find the distance from current location to Target position
+6.  Move the Zombie towards the target by A* search 
+7.  In main, create the obstacles and move the player by Key movements up, down,left and right 
+10.  Update the display every time 
 11.  Stop the program
- ### Program:
+### Program:
 
 ```python
-import pygame
-pygame.init()
-width, height = 800, 600
-screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("Simple Jumping with Image")
-black = (0, 0, 0)
-sprite_image_filename = "C:/Users/navee/Downloads/ai for games/Hedgedog.jpg"
-sprite = pygame.image.load(sprite_image_filename)
-sprite_width, sprite_height = sprite.get_size()
-player_x = 100
-player_y = height - sprite_height
-player_velocity = 5
-jump_power = -15
-gravity = 1
-is_jumping = False
-vertical_speed = 0
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]:
-        player_x -= player_velocity
-    if keys[pygame.K_RIGHT]:
-        player_x += player_velocity
-    if not is_jumping:
-        if keys[pygame.K_SPACE]:
-            is_jumping = True
-            vertical_speed = jump_power
-    if is_jumping:
-        player_y += vertical_speed
-        vertical_speed += gravity
-        if player_y >= height - sprite_height:
-            player_y = height - sprite_height
-            is_jumping = False
-    screen.fill(black)
-    screen.blit(sprite, (player_x, player_y))
-    pygame.display.flip()
-    pygame.time.delay(30)
+# Define a large negative and positive value to represent infinity
+INF = float('inf')
 
-pygame.quit()
+# Alpha-Beta Pruning function
+def alpha_beta_pruning(depth, node_index, maximizing_player, values, alpha, beta):
+    # Base case: leaf node is reached
+    if depth == 3:
+        return values[node_index]
+    
+    if maximizing_player:
+        max_eval = -INF
+        # Recur for the two children of the current node
+        for i in range(2):
+            eval = alpha_beta_pruning(depth + 1, node_index * 2 + i, False, values, alpha, beta)
+            max_eval = max(max_eval, eval)
+            alpha = max(alpha, eval)
+            
+            # Prune the branch
+            if beta <= alpha:
+                break
+        return max_eval
+    else:
+        min_eval = INF
+        # Recur for the two children of the current node
+        for i in range(2):
+            eval = alpha_beta_pruning(depth + 1, node_index * 2 + i, True, values, alpha, beta)
+            min_eval = min(min_eval, eval)
+            beta = min(beta, eval)
+            
+            # Prune the branch
+            if beta <= alpha:
+                break
+        return min_eval
+
+# Driver code : 
+if __name__ == "__main__":
+    # This is the terminal/leaf node values of the game tree
+    values = [3, 5, 6, 9, 1, 2, 0, -1]
+
+    print("Optimal value:", alpha_beta_pruning(0, 0, True, values, -INF, INF))
 ```
 ### Output:
-
-<img src="https://github.com/user-attachments/assets/032f4edd-0166-4fe2-b2ab-fcd4d0ad33f9" width=50%>
+<img width="1128" alt="377505777-24ec26e2-cbce-4aeb-b866-0918b98e1d39" src="https://github.com/user-attachments/assets/0a7976c5-c8c1-47e2-be9a-f53331355daa">
 
 
 ### Result:
-Thus the simple jumping behavior was implemented.
+Thus the simple Zombie survival game was implemented using python.

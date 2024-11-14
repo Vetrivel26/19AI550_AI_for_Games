@@ -1,114 +1,71 @@
-# Ex.No: 4  Implementation of Snake game using Steering behaviors
-### DATE:                                                                            
-### REGISTER NUMBER : 212221240060
+# Ex.No: 5  Implementation of Jumping behavior 
+#### DATE:                                                                        
+#### REGISTER NUMBER : 212221240060
 ### AIM: 
-To write a python program to simulate the snake game using steering behaviors
+To write a python program to simulate Jumbing behavior. 
+
 ### Algorithm:
 1. Start the program
 2. Import the necessary modules
 3. Initiate the pygame engine and window
-4. Specify the necessary parameter for background,snake and food
-5. Create a function for seeking behavior towards the target
-6.  Move the snake towards the target by move function
-7.  Increase the size of snake by wrap around function
-8.  create a food at location randomly
-9.  In main, create a game loop, move the snake towards the food,check the collision and increase the size
-10.  Update the display
+4. Specify the necessary parameter for player height,depth,gravity,jump power. 
+5. Create a game loop to simulate the continuous behavior.
+6. If Quit button is pressed then quit the pygame window.
+7. Move the player left when left button is pressed
+8. Move the player right when right button is pressed
+9. If space bar is pressed then enable the jump by increasing y axis value.
+10. land the player and display the player at every timestep
 11.  Stop the program
  ### Program:
+
 ```python
 import pygame
-import sys
-import random
-
-# Initialize Pygame
 pygame.init()
-
-# Constants
-WIDTH, HEIGHT = 800, 600
-BACKGROUND_COLOR = (0, 0, 0)
-SNAKE_COLOR = (0, 255, 0)
-FOOD_COLOR = (255, 0, 0)
-SNAKE_SIZE = 20
-FOOD_SIZE = 20
-MAX_SPEED = 5
-FPS = 15
-
-# Create the screen
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Steering Behavior Snake Game")
-
-# Clock to control the frame rate
-clock = pygame.time.Clock()
-
-class Snake:
-    def _init_(self):
-        self.body = [pygame.Vector2(WIDTH // 2, HEIGHT // 2)]
-        self.direction = pygame.Vector2(MAX_SPEED, 0)
-        self.grow = False
-
-    def seek(self, target):
-        direction = target - self.body[0]
-        if direction.length() > 0:
-            self.direction = direction.normalize() * MAX_SPEED
-
-    def move(self):
-        if self.grow:
-            self.body.append(self.body[-1])
-            self.grow = False
-        for i in range(len(self.body) - 1, 0, -1):
-            self.body[i] = pygame.Vector2(self.body[i - 1])
-        self.body[0] += self.direction
-        self.wrap_around()
-
-    def wrap_around(self):
-        if self.body[0].x < 0: self.body[0].x = WIDTH
-        elif self.body[0].x >= WIDTH: self.body[0].x = 0
-        if self.body[0].y < 0: self.body[0].y = HEIGHT
-        elif self.body[0].y >= HEIGHT: self.body[0].y = 0
-
-    def draw(self, surface):
-        for segment in self.body:
-            pygame.draw.rect(surface, SNAKE_COLOR, pygame.Rect(segment.x, segment.y, SNAKE_SIZE, SNAKE_SIZE))
-
-    def check_collision(self, food_position):
-        return pygame.Vector2.distance_to(self.body[0], food_position) < SNAKE_SIZE
-
-class Food:
-    def _init_(self):
-        self.position = pygame.Vector2(random.randint(0, WIDTH - FOOD_SIZE), random.randint(0, HEIGHT - FOOD_SIZE))
-
-    def randomize_position(self):
-        self.position = pygame.Vector2(random.randint(0, WIDTH - FOOD_SIZE), random.randint(0, HEIGHT - FOOD_SIZE))
-
-    def draw(self, surface):
-        pygame.draw.rect(surface, FOOD_COLOR, pygame.Rect(self.position.x, self.position.y, FOOD_SIZE, FOOD_SIZE))
-
-# Create instances
-snake = Snake()
-food = Food()
-
-while True:
+width, height = 800, 600
+screen = pygame.display.set_mode((width, height))
+pygame.display.set_caption("Simple Jumping with Image")
+black = (0, 0, 0)
+sprite_image_filename = "C:/Users/navee/Downloads/ai for games/Hedgedog.jpg"
+sprite = pygame.image.load(sprite_image_filename)
+sprite_width, sprite_height = sprite.get_size()
+player_x = 100
+player_y = height - sprite_height
+player_velocity = 5
+jump_power = -15
+gravity = 1
+is_jumping = False
+vertical_speed = 0
+running = True
+while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-
-    snake.seek(food.position)
-    snake.move()
-
-    if snake.check_collision(food.position):
-        snake.grow = True
-        food.randomize_position()
-
-    screen.fill(BACKGROUND_COLOR)
-    food.draw(screen)
-    snake.draw(screen)
+            running = False
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]:
+        player_x -= player_velocity
+    if keys[pygame.K_RIGHT]:
+        player_x += player_velocity
+    if not is_jumping:
+        if keys[pygame.K_SPACE]:
+            is_jumping = True
+            vertical_speed = jump_power
+    if is_jumping:
+        player_y += vertical_speed
+        vertical_speed += gravity
+        if player_y >= height - sprite_height:
+            player_y = height - sprite_height
+            is_jumping = False
+    screen.fill(black)
+    screen.blit(sprite, (player_x, player_y))
     pygame.display.flip()
-    clock.tick(FPS)
+    pygame.time.delay(30)
+
+pygame.quit()
 ```
 ### Output:
-<img src= "https://github.com/user-attachments/assets/24c8d266-4701-4f37-a65a-f9b54b26d2e4" width="400" height="400">
+
+<img src="https://github.com/user-attachments/assets/032f4edd-0166-4fe2-b2ab-fcd4d0ad33f9" width=50%>
+
 
 ### Result:
-Thus the simple snake game was implemented.
+Thus the simple jumping behavior was implemented.
